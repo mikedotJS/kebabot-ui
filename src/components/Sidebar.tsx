@@ -25,8 +25,8 @@ import { SidebarTitle } from "./SidebarTitle";
 export const Sidebar = (): JSX.Element => {
   return (
     <VStack
-      w="md"
-      p="8"
+      w="xs"
+      px={{ base: 4, sm: 4, "2xl": 8 }}
       alignItems="flex-start"
       justifyContent="flex-start"
       spacing="4"
