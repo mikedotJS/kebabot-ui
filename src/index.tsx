@@ -1,12 +1,14 @@
-import { ChakraProvider, ThemeConfig } from "@chakra-ui/react";
-import { Layout } from "./components/Layout";
-import React from "react";
-import ReactDom from "react-dom";
-import { extendTheme } from "@chakra-ui/react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Login from "./components/Login";
-import AuthProvider from "./providers/AuthProvider";
-import PrivateRoute from "./components/PrivateRoute";
+import React from 'react';
+import ReactDom from 'react-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import { ChakraProvider, extendTheme, ThemeConfig } from '@chakra-ui/react';
+
+import { Layout } from './components/Layout';
+import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
+import Reactionroles from './components/Reactionroles';
+import AuthProvider from './providers/AuthProvider';
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -20,9 +22,15 @@ const App = () => (
       <Router>
         <div>
           <Switch>
-            <PrivateRoute exact path="/">
-              <Layout />
-            </PrivateRoute>
+            <Layout>
+              {/* <PrivateRoute exact path="/">
+            </PrivateRoute> */}
+              <Switch>
+                <PrivateRoute exact path="/Features/reaction-roles">
+                  <Reactionroles />
+                </PrivateRoute>
+              </Switch>
+            </Layout>
             <Route path="/login">
               <Login />
             </Route>

@@ -1,26 +1,12 @@
+import React from 'react';
+import { FiBell, FiChevronDown, FiHome, FiSettings, FiThumbsUp, FiTwitter } from 'react-icons/fi';
+
 import {
-  Box,
-  Button,
-  Center,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Spacer,
-  Tag,
-  VStack,
-} from "@chakra-ui/react";
-import {
-  FiBell,
-  FiChevronDown,
-  FiHome,
-  FiSettings,
-  FiThumbsUp,
-  FiTwitter,
-} from "react-icons/fi";
-import React from "react";
-import { SidebarItem } from "./SidebarItem";
-import { SidebarTitle } from "./SidebarTitle";
+    Box, Button, Center, Menu, MenuButton, MenuItem, MenuList, Spacer, Tag, VStack
+} from '@chakra-ui/react';
+
+import { SidebarItem } from './SidebarItem';
+import { SidebarTitle } from './SidebarTitle';
 
 export const Sidebar = (): JSX.Element => {
   return (
@@ -51,7 +37,7 @@ export const Sidebar = (): JSX.Element => {
       </Menu>
 
       <Box w="full">
-        <SidebarItem icon={FiHome} text="Dashboard" />
+        <SidebarItem icon={FiHome} text="Dashboard" to="/" />
         <SidebarItem
           icon={FiBell}
           text="Notifications"
@@ -60,6 +46,7 @@ export const Sidebar = (): JSX.Element => {
               2
             </Tag>
           }
+          to="/notifs"
         />
       </Box>
 
@@ -67,14 +54,22 @@ export const Sidebar = (): JSX.Element => {
         <SidebarTitle text="FEATURES" />
 
         <Box>
-          <SidebarItem icon={FiThumbsUp} text="Reaction Roles" />
-          <SidebarItem icon={FiTwitter} text="Tweet Alerter" />
+          <SidebarItem
+            icon={FiThumbsUp}
+            text="Reaction Roles"
+            to="/features/reaction-roles"
+          />
+          <SidebarItem
+            icon={FiTwitter}
+            text="Tweet Alerter"
+            to="/features/tweet-alerter"
+          />
         </Box>
       </Box>
 
       <Spacer />
 
-      <SidebarItem icon={FiSettings} text="Settings" />
+      <SidebarItem icon={FiSettings} text="Settings" to="settings" />
     </VStack>
   );
 };
