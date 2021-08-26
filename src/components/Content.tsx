@@ -9,21 +9,21 @@ interface Props {
 }
 
 export const Content = ({ children }: Props): JSX.Element => {
-  const location = useLocation().pathname.split("/");
-  const [, ...newLocation] = location;
-  console.log(newLocation);
+  const location = useLocation();
+  const splittedLocation = location.pathname.split("/");
+  const [, ...paths] = splittedLocation;
 
-  const renderBreadcrumb = () => {
+  const renderBreadcrumbItems = () => {
     const pathMap = {
       features: "Features",
       "reaction-roles": "Reaction roles",
       "tweet-alerter": "Twitter Alerter",
-      notifs: "Notifications",
+      notifications: "Notifications",
     };
 
-    return newLocation.map((path, index) => {
+    return paths.map((path, index) => {
       return (
-        <BreadcrumbItem isCurrentPage={index === newLocation.length - 1}>
+        <BreadcrumbItem isCurrentPage={index === paths.length - 1}>
           <BreadcrumbLink>{pathMap[path]}</BreadcrumbLink>
         </BreadcrumbItem>
       );
@@ -43,7 +43,7 @@ export const Content = ({ children }: Props): JSX.Element => {
           spacing="8px"
           separator={<Icon as={FiChevronRight} color="gray.500" />}
         >
-          {renderBreadcrumb()}
+          {renderBreadcrumbItems()}
         </Breadcrumb>
         <Box>{children}</Box>
       </Box>

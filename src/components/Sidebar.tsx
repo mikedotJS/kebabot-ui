@@ -46,7 +46,7 @@ export const Sidebar = (): JSX.Element => {
               2
             </Tag>
           }
-          to="/notifs"
+          to="/notifications"
         />
       </Box>
 
@@ -69,7 +69,7 @@ export const Sidebar = (): JSX.Element => {
 
       <Spacer />
 
-      <SidebarItem icon={FiSettings} text="Settings" to="settings" />
+      <SidebarItem icon={FiSettings} text="Settings" to="/settings" />
     </VStack>
   );
 };

@@ -23,10 +23,8 @@ const App = () => (
         <div>
           <Switch>
             <Layout>
-              {/* <PrivateRoute exact path="/">
-            </PrivateRoute> */}
               <Switch>
-                <PrivateRoute exact path="/Features/reaction-roles">
+                <PrivateRoute exact path="/features/reaction-roles">
                   <Reactionroles />
                 </PrivateRoute>
               </Switch>
