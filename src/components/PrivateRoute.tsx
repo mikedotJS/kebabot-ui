@@ -9,7 +9,7 @@ interface Props extends RouteProps {
   children: JSX.Element;
 }
 
-function PrivateRoute(props: Props) {
+function PrivateRoute(props: Props): JSX.Element {
   const { children, ...rest } = props;
 
   const { api, user, loading } = useAuth();
@@ -19,7 +19,7 @@ function PrivateRoute(props: Props) {
   ) : (
     <Route
       {...rest}
-      render={(props) => (!api || !user ? <Redirect to="/login" /> : children)}
+      render={() => (!api || !user ? <Redirect to="/login" /> : children)}
     ></Route>
   );
 }
