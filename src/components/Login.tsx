@@ -11,9 +11,15 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import {
+  Link as ReactRouterLink,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 interface LoginFormValues {
   email: string;
@@ -21,12 +27,20 @@ interface LoginFormValues {
 }
 
 function Login(): JSX.Element {
-  const handleSubmit = (values: LoginFormValues, actions) => {
-    setTimeout(() => {
-      console.log("submit", values);
+  const history = useHistory();
+  const { user, login } = useAuth();
+
+  const handleSubmit = async (values: LoginFormValues, actions) => {
+    try {
+      await login({ email: values.email, password: values.password });
+    } catch (error) {
+      console.error(error);
+    } finally {
       actions.setSubmitting(false);
-    }, 1000);
+    }
   };
+
+  if (user) return <Redirect to="/" />;
 
   return (
     <Flex justifyContent="center" flexDir="column" alignItems="center" p="8">

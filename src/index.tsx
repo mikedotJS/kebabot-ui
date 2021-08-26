@@ -5,6 +5,8 @@ import ReactDom from "react-dom";
 import { extendTheme } from "@chakra-ui/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./components/Login";
+import AuthProvider from "./providers/AuthProvider";
+import PrivateRoute from "./components/PrivateRoute";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -13,20 +15,22 @@ const config: ThemeConfig = {
 const theme = extendTheme({ config });
 
 const App = () => (
-  <ChakraProvider theme={theme}>
-    <Router>
-      <div>
-        <Switch>
-          <Route exact path="/">
-            <Layout />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  </ChakraProvider>
+  <AuthProvider>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <div>
+          <Switch>
+            <PrivateRoute exact path="/">
+              <Layout />
+            </PrivateRoute>
+            <Route path="/login">
+              <Login />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </ChakraProvider>
+  </AuthProvider>
 );
 
 ReactDom.render(<App />, document.getElementById("app"));
