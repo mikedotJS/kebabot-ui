@@ -1,9 +1,9 @@
-import React, { Children } from 'react';
+import React from "react";
 
-import { Box } from '@chakra-ui/react';
+import { Box } from "@chakra-ui/react";
 
-import { Content } from './Content';
-import { Sidebar } from './Sidebar';
+import { Content } from "./Content";
+import { Sidebar } from "./Sidebar";
 
 interface Props {
   children: JSX.Element;
