@@ -1,14 +1,35 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Icon,
-} from "@chakra-ui/react";
-import React from "react";
-import { FiChevronRight } from "react-icons/fi";
+import React from 'react';
+import { FiChevronRight } from 'react-icons/fi';
+import { useLocation } from 'react-router-dom';
 
-export const Content = (): JSX.Element => {
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon } from '@chakra-ui/react';
+
+interface Props {
+  children: JSX.Element;
+}
+
+export const Content = ({ children }: Props): JSX.Element => {
+  const location = useLocation();
+  const splittedLocation = location.pathname.split("/");
+  const [, ...paths] = splittedLocation;
+
+  const renderBreadcrumbItems = () => {
+    const pathMap = {
+      features: "Features",
+      "reaction-roles": "Reaction roles",
+      "tweet-alerter": "Twitter Alerter",
+      notifications: "Notifications",
+    };
+
+    return paths.map((path, index) => {
+      return (
+        <BreadcrumbItem isCurrentPage={index === paths.length - 1}>
+          <BreadcrumbLink>{pathMap[path]}</BreadcrumbLink>
+        </BreadcrumbItem>
+      );
+    });
+  };
+
   return (
     <Box borderRadius="md" h="full" w="full" pr={{ base: 4, sm: 4, "2xl": 8 }}>
       <Box
@@ -22,14 +43,9 @@ export const Content = (): JSX.Element => {
           spacing="8px"
           separator={<Icon as={FiChevronRight} color="gray.500" />}
         >
-          <BreadcrumbItem>
-            <BreadcrumbLink href="#">Features</BreadcrumbLink>
-          </BreadcrumbItem>
-
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="#">Reaction Roles</BreadcrumbLink>
-          </BreadcrumbItem>
+          {renderBreadcrumbItems()}
         </Breadcrumb>
+        <Box>{children}</Box>
       </Box>
     </Box>
   );

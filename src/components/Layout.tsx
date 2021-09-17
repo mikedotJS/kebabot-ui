@@ -1,13 +1,19 @@
-import { Box } from "@chakra-ui/react";
-import { Sidebar } from "./Sidebar";
-import React from "react";
-import { Content } from "./Content";
+import React, { Children } from 'react';
 
-export const Layout = (): JSX.Element => {
+import { Box } from '@chakra-ui/react';
+
+import { Content } from './Content';
+import { Sidebar } from './Sidebar';
+
+interface Props {
+  children: JSX.Element;
+}
+
+export const Layout = ({ children }: Props): JSX.Element => {
   return (
     <Box w="full" h="full" display="flex" py={{ base: 4, sm: 4, "2xl": 8 }}>
       <Sidebar />
-      <Content />
+      <Content>{children}</Content>
     </Box>
   );
 };
