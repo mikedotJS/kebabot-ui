@@ -21,20 +21,19 @@ const App = () => (
     <ChakraProvider theme={theme}>
       <Router>
         <div>
-          <Switch>
-            <PrivateRoute exact path="/">
-              <Layout>
-                <Switch>
-                  <PrivateRoute exact path="/features/reaction-roles">
-                    <Reactionroles />
-                  </PrivateRoute>
-                </Switch>
-              </Layout>
-            </PrivateRoute>
-            <Route path="/login">
-              <Login />
-            </Route>
-          </Switch>
+          <Layout>
+            <Switch>
+              <PrivateRoute exact path="/">
+                <div>Page principale à faire</div>
+              </PrivateRoute>
+              <PrivateRoute path="/features/reaction-roles">
+                <Reactionroles />
+              </PrivateRoute>
+            </Switch>
+          </Layout>
+          <Route path="/login">
+            <Login />
+          </Route>
         </div>
       </Router>
     </ChakraProvider>
