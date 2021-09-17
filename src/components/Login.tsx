@@ -11,14 +11,9 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import {
-  Link as ReactRouterLink,
-  Redirect,
-  useHistory,
-} from "react-router-dom";
+import { Link as ReactRouterLink, Redirect } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 interface LoginFormValues {
@@ -27,16 +22,16 @@ interface LoginFormValues {
 }
 
 function Login(): JSX.Element {
-  const history = useHistory();
-  const { user, login } = useAuth();
+  const { user, login, loading } = useAuth();
 
-  const handleSubmit = async (values: LoginFormValues, actions) => {
+  const handleSubmit = async (values: LoginFormValues) => {
     try {
-      await login({ email: values.email, password: values.password });
+      await login({
+        email: values.email,
+        password: values.password,
+      });
     } catch (error) {
       console.error(error);
-    } finally {
-      actions.setSubmitting(false);
     }
   };
 
@@ -65,7 +60,7 @@ function Login(): JSX.Element {
           initialValues={{ email: "", password: "" }}
           onSubmit={handleSubmit}
         >
-          {(props) => (
+          {() => (
             <Form>
               <VStack spacing="4">
                 <Field name="email">
@@ -104,7 +99,7 @@ function Login(): JSX.Element {
                 </Field>
 
                 <Button
-                  isLoading={props.isSubmitting}
+                  isLoading={loading}
                   type="submit"
                   w="full"
                   bg="teal.500"

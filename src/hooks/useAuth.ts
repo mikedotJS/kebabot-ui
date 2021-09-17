@@ -1,43 +1,63 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import constate from "constate";
 import React, { useState } from "react";
 
-async function login({ email, password }) {
-  const response = await axios.post(
-    "http://localhost:3333/login",
-    {
-      email,
-      password,
-    },
-    { withCredentials: true }
-  );
-
-  localStorage.setItem("auth", JSON.stringify(response.data));
-}
-
 export const [AuthContextProvider, useAuth] = constate(() => {
   const [user, setUser] = useState<any>(undefined);
-  const [api, setApi] = useState<any>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [api, setApi] = useState<AxiosInstance | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  React.useEffect(() => {
-    const auth = JSON.parse(localStorage.getItem("auth"));
+  async function login({ email, password }) {
+    setLoading(true);
 
-    if (auth) {
+    try {
+      const response = await axios.post(
+        "http://localhost:3333/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+
+      localStorage.setItem("auth", JSON.stringify(response.data));
+
+      const { token } = response.data;
+
       setApi(
         axios.create({
           baseURL: "http://localhost:3333",
           headers: {
-            Authorization: `Bearer ${auth.token}`,
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      );
+      setUser(response.data.user);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    const auth = JSON.parse(localStorage.getItem("auth"));
+
+    if (auth && user == null && api == null) {
+      const { token } = auth.token;
+
+      setApi(
+        axios.create({
+          baseURL: "http://localhost:3333",
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         })
       );
 
       setUser(auth.user);
     }
+  }, [api, user, setApi, setUser]);
 
-    setLoading(false);
-  }, []);
-
-  return { api, user, loading, login };
+  return { api, user, loading, login, setLoading, setUser, setApi };
 });
