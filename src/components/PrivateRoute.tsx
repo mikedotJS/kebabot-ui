@@ -1,9 +1,9 @@
-import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import React from "react";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 
-import { Spinner } from '@chakra-ui/react';
+import { Spinner } from "@chakra-ui/react";
 
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from "../hooks/useAuth";
 
 interface Props extends RouteProps {
   children: JSX.Element;
