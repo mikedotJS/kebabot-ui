@@ -10,16 +10,24 @@ interface Props extends RouteProps {
 }
 
 function PrivateRoute(props: Props): JSX.Element {
-  const { children, ...rest } = props;
+  const { ...rest } = props;
 
-  const { api, user, loading } = useAuth();
+  const { user, loading } = useAuth();
+
+  const lastLocation = localStorage.getItem("lastLocation");
+
+  if (user) return <Redirect to={lastLocation || "/"} />;
 
   return loading ? (
     <Spinner />
   ) : (
     <Route
       {...rest}
-      render={() => (!api || !user ? <Redirect to="/login" /> : children)}
+      render={() => {
+        localStorage.setItem("lastLocation", location.pathname);
+
+        return <Redirect to={"/login"} />;
+      }}
     ></Route>
   );
 }

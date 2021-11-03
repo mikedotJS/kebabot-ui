@@ -20,6 +20,7 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import EmojiPicker from "emoji-picker-react";
 import { FiPlus, FiSmile, FiTrash } from "react-icons/fi";
 import { useAuth } from "../hooks/useAuth";
+import api from "../api";
 
 interface ReactionRolesFormValues {
   message: string;
@@ -35,6 +36,17 @@ export const ReactionRoles = (): JSX.Element => {
 
   const handleSubmit = (values: ReactionRolesFormValues) => {
     alert(JSON.stringify(values));
+
+    const formData = new FormData();
+    formData.append("message", values.message);
+
+    try {
+      api.patch(`/reactionRolesRules/${user.reactionRolesRule.id}`, {
+        message: values.message,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -42,13 +54,12 @@ export const ReactionRoles = (): JSX.Element => {
       <VStack alignItems="flex-start" w="full">
         <Formik<ReactionRolesFormValues>
           initialValues={{
-            message: "",
+            message: user.reactionRolesRule.message || "",
             reactionRoles: [],
           }}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, setFieldValue, values }) => {
-            console.log("values", values);
             return (
               <Form style={{ width: "100%" }}>
                 <VStack alignItems="flex-start" spacing="4">
