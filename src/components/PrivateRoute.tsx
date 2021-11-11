@@ -1,32 +1,26 @@
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 
-import { Spinner } from "@chakra-ui/react";
-
 import { useAuth } from "../hooks/useAuth";
+import Loading from "./Loading";
 
 interface Props extends RouteProps {
   children: JSX.Element;
 }
 
 function PrivateRoute(props: Props): JSX.Element {
-  const { ...rest } = props;
+  const { children, ...rest } = props;
 
   const { user, loading } = useAuth();
 
-  const lastLocation = localStorage.getItem("lastLocation");
-
-  if (user) return <Redirect to={lastLocation || "/"} />;
-
   return loading ? (
-    <Spinner />
+    <Loading />
   ) : (
     <Route
       {...rest}
       render={() => {
-        localStorage.setItem("lastLocation", location.pathname);
-
-        return <Redirect to={"/login"} />;
+        if (!user) localStorage.setItem("lastLocation", location.pathname);
+        return user ? children : <Redirect to={"/login"} />;
       }}
     ></Route>
   );

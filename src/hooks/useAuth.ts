@@ -23,15 +23,14 @@ export const [AuthContextProvider, useAuth] = constate(() => {
 
       localStorage.setItem("auth", JSON.stringify(response.data));
 
-      setUser(response.data.user);
-
-      api.interceptors.request.use((config) => ({
-        ...config,
+      const _response = await api.get("/viewer", {
         headers: {
-          ...config.headers,
-          Authorization: `Bearer ${response.data.token.token}`,
+          Authorization: `Bearer ${response.data.token}`,
         },
-      }));
+      });
+      const user = _response.data;
+
+      setUser(user);
     } catch (error) {
       console.error(error);
     } finally {
@@ -39,11 +38,31 @@ export const [AuthContextProvider, useAuth] = constate(() => {
     }
   }
 
-  useEffect(() => {
-    const _user = JSON.parse(localStorage.getItem("auth"))?.user;
+  async function logout() {
+    localStorage.removeItem("auth");
 
-    if (_user) setUser(_user);
+    setUser(undefined);
+  }
+
+  useEffect(() => {
+    const getViewer = async () => {
+      setLoading(true);
+
+      try {
+        const response = await api.get("/viewer");
+
+        const _user = response.data;
+
+        if (_user) setUser(_user);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getViewer();
   }, []);
 
-  return { user, loading, login, setLoading, setUser };
+  return { user, loading, login, setLoading, setUser, logout };
 });

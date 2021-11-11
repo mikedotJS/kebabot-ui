@@ -35,7 +35,9 @@ function Login(): JSX.Element {
     }
   };
 
-  if (user) return <Redirect to="/" />;
+  const lastLocation = localStorage.getItem("lastLocation");
+
+  if (user) return <Redirect to={lastLocation || "/"} />;
 
   return (
     <Flex justifyContent="center" flexDir="column" alignItems="center" p="8">
