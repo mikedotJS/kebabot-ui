@@ -7,7 +7,7 @@ import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { Layout } from "./components/Layout";
 import Login from "./components/Login";
 import PrivateRoute from "./components/PrivateRoute";
-import Reactionroles from "./components/Reactionroles";
+import { ReactionRoles } from "./components/ReactionRoles";
 import AuthProvider from "./providers/AuthProvider";
 
 const config: ThemeConfig = {
@@ -20,21 +20,23 @@ const App = () => (
   <AuthProvider>
     <ChakraProvider theme={theme}>
       <Router>
-        <div>
-          <Layout>
-            <Switch>
-              <PrivateRoute exact path="/">
+        <Switch>
+          <div>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute exact path="/">
+              <Layout>
                 <div>Page principale à faire</div>
-              </PrivateRoute>
-              <PrivateRoute path="/features/reaction-roles">
-                <Reactionroles />
-              </PrivateRoute>
-            </Switch>
-          </Layout>
-          <Route path="/login">
-            <Login />
-          </Route>
-        </div>
+              </Layout>
+            </PrivateRoute>
+            <PrivateRoute path="/features/reaction-roles">
+              <Layout>
+                <ReactionRoles />
+              </Layout>
+            </PrivateRoute>
+          </div>
+        </Switch>
       </Router>
     </ChakraProvider>
   </AuthProvider>

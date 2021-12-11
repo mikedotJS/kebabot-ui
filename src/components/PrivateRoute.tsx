@@ -1,9 +1,8 @@
-import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import React from "react";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 
-import { Spinner } from '@chakra-ui/react';
-
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from "../hooks/useAuth";
+import Loading from "./Loading";
 
 interface Props extends RouteProps {
   children: JSX.Element;
@@ -12,14 +11,17 @@ interface Props extends RouteProps {
 function PrivateRoute(props: Props): JSX.Element {
   const { children, ...rest } = props;
 
-  const { api, user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   return loading ? (
-    <Spinner />
+    <Loading />
   ) : (
     <Route
       {...rest}
-      render={() => (!api || !user ? <Redirect to="/login" /> : children)}
+      render={() => {
+        if (!user) localStorage.setItem("lastLocation", location.pathname);
+        return user ? children : <Redirect to={"/login"} />;
+      }}
     ></Route>
   );
 }

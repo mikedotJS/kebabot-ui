@@ -1,14 +1,34 @@
-import React from 'react';
-import { FiBell, FiChevronDown, FiHome, FiSettings, FiThumbsUp, FiTwitter } from 'react-icons/fi';
+import React from "react";
+import {
+  FiBell,
+  FiChevronDown,
+  FiHome,
+  FiSettings,
+  FiThumbsUp,
+  FiTwitter,
+} from "react-icons/fi";
 
 import {
-    Box, Button, Center, Menu, MenuButton, MenuItem, MenuList, Spacer, Tag, VStack
-} from '@chakra-ui/react';
+  Box,
+  Button,
+  Center,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
+  Tag,
+  VStack,
+} from "@chakra-ui/react";
 
-import { SidebarItem } from './SidebarItem';
-import { SidebarTitle } from './SidebarTitle';
+import { SidebarItem } from "./SidebarItem";
+import { SidebarTitle } from "./SidebarTitle";
+import { useAuth } from "../hooks/useAuth";
+import _ from "lodash";
 
 export const Sidebar = (): JSX.Element => {
+  const { logout, user } = useAuth();
+
   return (
     <VStack
       w="xs"
@@ -24,15 +44,18 @@ export const Sidebar = (): JSX.Element => {
           rightIcon={<FiChevronDown />}
           leftIcon={
             <Center w="6" h="6" borderRadius="md" bg="green.400" fontSize="xs">
-              LK
+              {user.guild_name
+                .split(" ")
+                .map((word) => _.truncate(word, { length: 1, omission: "" }))
+                .join("")}
             </Center>
           }
           pl="2"
         >
-          La Kébaberie
+          {user.guild_name}
         </MenuButton>
         <MenuList>
-          <MenuItem>Log out</MenuItem>
+          <MenuItem onClick={() => logout()}>Log out</MenuItem>
         </MenuList>
       </Menu>
 

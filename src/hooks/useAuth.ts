@@ -1,10 +1,11 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 import constate from "constate";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../api";
 
 export const [AuthContextProvider, useAuth] = constate(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(undefined);
-  const [api, setApi] = useState<AxiosInstance | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function login({ email, password }) {
@@ -22,17 +23,14 @@ export const [AuthContextProvider, useAuth] = constate(() => {
 
       localStorage.setItem("auth", JSON.stringify(response.data));
 
-      const { token } = response.data;
+      const _response = await api.get("/viewer", {
+        headers: {
+          Authorization: `Bearer ${response.data.token}`,
+        },
+      });
+      const user = _response.data;
 
-      setApi(
-        axios.create({
-          baseURL: "http://localhost:3333",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-      );
-      setUser(response.data.user);
+      setUser(user);
     } catch (error) {
       console.error(error);
     } finally {
@@ -40,24 +38,31 @@ export const [AuthContextProvider, useAuth] = constate(() => {
     }
   }
 
-  React.useEffect(() => {
-    const auth = JSON.parse(localStorage.getItem("auth"));
+  async function logout() {
+    localStorage.removeItem("auth");
 
-    if (auth && user == null && api == null) {
-      const { token } = auth.token;
+    setUser(undefined);
+  }
 
-      setApi(
-        axios.create({
-          baseURL: "http://localhost:3333",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-      );
+  useEffect(() => {
+    const getViewer = async () => {
+      setLoading(true);
 
-      setUser(auth.user);
-    }
-  }, [api, user, setApi, setUser]);
+      try {
+        const response = await api.get("/viewer");
 
-  return { api, user, loading, login, setLoading, setUser, setApi };
+        const _user = response.data;
+
+        if (_user) setUser(_user);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getViewer();
+  }, []);
+
+  return { user, loading, login, setLoading, setUser, logout };
 });

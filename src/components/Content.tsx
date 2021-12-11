@@ -1,8 +1,14 @@
-import React from 'react';
-import { FiChevronRight } from 'react-icons/fi';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { FiChevronRight } from "react-icons/fi";
+import { useLocation } from "react-router-dom";
 
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon } from '@chakra-ui/react';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Icon,
+} from "@chakra-ui/react";
 
 interface Props {
   children: JSX.Element;
@@ -38,6 +44,7 @@ export const Content = ({ children }: Props): JSX.Element => {
         w="full"
         bg="gray.700"
         p={{ base: 4, sm: 4, "2xl": 8 }}
+        overflow="hidden"
       >
         <Breadcrumb
           spacing="8px"
@@ -45,7 +52,7 @@ export const Content = ({ children }: Props): JSX.Element => {
         >
           {renderBreadcrumbItems()}
         </Breadcrumb>
-        <Box>{children}</Box>
+        <Box h="full">{children}</Box>
       </Box>
     </Box>
   );
