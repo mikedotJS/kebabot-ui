@@ -1,14 +1,28 @@
-import { Field, Form, Formik } from 'formik';
-import React from 'react';
-import { Link as ReactRouterLink, Redirect, useHistory } from 'react-router-dom';
+import { Field, Form, Formik } from "formik";
+import React from "react";
+import {
+  Link as ReactRouterLink,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
 
 import {
-    Box, Button, Flex, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Link, Text,
-    useToast, VStack
-} from '@chakra-ui/react';
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Input,
+  Link,
+  Text,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 
-import api from '../api';
-import { useAuth } from '../hooks/useAuth';
+import api from "../api";
+import { useAuth } from "../hooks/useAuth";
 
 interface SignUpFormValues {
   email: string;
@@ -17,24 +31,23 @@ interface SignUpFormValues {
 }
 
 function SignUp(): JSX.Element {
-  const lastLocation = localStorage.getItem("lastLocation");
   const { user, loading } = useAuth();
   const toast = useToast();
   const history = useHistory();
 
-  if (user) return <Redirect to={lastLocation || "/"} />;
+  if (user) return <Redirect to={"/"} />;
 
   const handleSubmit = async (value: SignUpFormValues, formikHelpers) => {
     try {
       await api.post("/users", value);
-      console.log(value);
+
       history.push("/");
       toast({
         title: "Account created.",
-        description: "Your account have been created.",
+        description: "Your account has been created.",
         status: "success",
         isClosable: true,
-        duration: 9000,
+        duration: 3000,
       });
     } catch (error) {
       console.error(error);
@@ -42,7 +55,7 @@ function SignUp(): JSX.Element {
         title: "Error occured.",
         description: "Failed to create account",
         status: "error",
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
     } finally {
