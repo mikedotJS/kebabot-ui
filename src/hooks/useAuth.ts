@@ -2,6 +2,7 @@ import axios from "axios";
 import constate from "constate";
 import { useEffect, useState } from "react";
 import api from "../api";
+import { API_URL } from "../constants";
 
 export const [AuthContextProvider, useAuth] = constate(() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +14,7 @@ export const [AuthContextProvider, useAuth] = constate(() => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3333/login",
+        `${API_URL}/login`,
         {
           email,
           password,
