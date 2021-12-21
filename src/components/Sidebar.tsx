@@ -28,7 +28,6 @@ import _ from "lodash";
 
 export const Sidebar = (): JSX.Element => {
   const { logout, user } = useAuth();
-
   return (
     <VStack
       w="xs"
